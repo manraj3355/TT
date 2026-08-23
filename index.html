@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#111528">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="3C Timetable">
+<title>Time-Table · B.Tech CS&AI 3C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111528; --ink-soft:#4a5068; --paper:#e9edf3; --card:#ffffff;
+    --line:#d3dae5; --accent:#3b3ad6;
+    --c-ds:#3b3ad6; --c-oops:#0f766e; --c-de:#a8560a; --c-dm:#b3164a;
+    --c-ai:#6d28d9; --c-ws:#166534; --c-cec:#475569;
+    --grid: rgba(17,21,40,.055);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;
+    color:var(--ink);
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:15px;line-height:1.45;-webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:18px 14px 56px}
+
+  header{background:var(--ink);color:#fff;border-radius:18px;padding:20px 18px 18px;position:relative;overflow:hidden}
+  header:after{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:26px 26px;pointer-events:none}
+  .eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:#9aa3c4;margin:0 0 8px}
+  h1{font-family:Archivo,system-ui,sans-serif;font-weight:800;font-size:clamp(26px,7.5vw,38px);
+    line-height:1.03;letter-spacing:-.02em;margin:0}
+  h1 span{display:block;color:#8f97ba;font-weight:500;font-size:.52em;letter-spacing:.01em;margin-top:8px}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative;z-index:1}
+  .fact{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;
+    background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);
+    padding:5px 9px;border-radius:7px;color:#dfe3f2}
+
+  .switch{margin:16px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+  .switch p{margin:0 0 10px;font-size:13px;color:var(--ink-soft)}
+  .switch p b{color:var(--ink)}
+  .btns{display:flex;gap:8px}
+  .btns button{flex:1;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;font-weight:600;
+    padding:10px 6px;border-radius:10px;border:1.5px solid var(--line);
+    background:#f6f8fb;color:var(--ink-soft);cursor:pointer;transition:.15s}
+  .btns button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .btns button:focus-visible{outline:3px solid #a3a2ee;outline-offset:2px}
+  .hint{margin:10px 0 0;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:var(--ink-soft)}
+
+  .day{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:14px;overflow:hidden}
+  .day-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:14px 15px 11px}
+  .day-name{font-family:Archivo,system-ui,sans-serif;font-weight:700;font-size:19px;letter-spacing:-.01em}
+  .day-note{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:var(--ink-soft);text-align:right}
+
+  .ruler{display:flex;gap:2px;padding:0 15px 4px}
+  .ruler i{height:7px;flex:1 1 0;border-radius:2px;background:var(--slot,#e4e8f0)}
+  .ruler i.free{background:repeating-linear-gradient(45deg,#e4e8f0 0 3px,#f4f6fa 3px 6px)}
+  .ticks{display:flex;justify-content:space-between;padding:5px 15px 12px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.5px;color:#9aa2b5}
+
+  .slot{display:flex;gap:11px;padding:11px 15px;border-top:1px solid #eef1f6}
+  .slot.dim{opacity:.32}
+  .time{flex:0 0 62px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;
+    line-height:1.35;color:var(--ink-soft);padding-top:2px}
+  .time b{display:block;color:var(--ink);font-weight:600;font-size:12.5px}
+  .body{flex:1;min-width:0;border-left:3px solid var(--col,#cbd3e0);padding-left:11px}
+  .subj{font-weight:600;font-size:15px;letter-spacing:-.005em}
+  .subj em{font-style:normal;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;
+    font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;
+    background:var(--col,#98a2b3);padding:2px 6px;border-radius:5px;margin-left:7px;
+    vertical-align:2px;white-space:nowrap}
+  .meta{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:var(--ink-soft);
+    margin-top:3px;word-break:break-word}
+  .slot.free .body{border-left-style:dashed;border-left-color:#cfd6e2}
+  .slot.free .subj{color:#98a2b3;font-weight:500}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:20px}
+  .panel h2{font-family:Archivo,sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    margin:0 0 11px;color:var(--ink-soft)}
+  .panel dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:13px}
+  .panel dt{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;color:var(--accent);font-weight:600}
+  .panel dd{margin:0;color:var(--ink-soft)}
+  .panel ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-soft)}
+  .panel li{margin-bottom:7px}
+  .panel li b{color:var(--ink);font-weight:600}
+  .caveat{font-size:12px;color:var(--ink-soft);margin-top:16px;padding:12px 14px;
+    border-left:3px solid #c9cfdc;background:rgba(255,255,255,.6);border-radius:0 10px 10px 0}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Time-Table · Session 2026–27 (I) · revised</p>
+  <h1>B.Tech CS&nbsp;&amp;&nbsp;AI<span>Section 3C · E33C</span></h1>
+  <div class="facts">
+    <span class="fact">Classroom 317</span>
+    <span class="fact">9:30am – 4:30pm</span>
+    <span class="fact">7 slots / day</span>
+    <span class="fact">Mon – Sat</span>
+  </div>
+</header>
+
+<div class="switch">
+  <p>Every lab runs twice, once per batch. <b>Pick your batch</b> to grey out the sessions that aren't yours.</p>
+  <div class="btns">
+    <button id="bAll" aria-pressed="true">Show all</button>
+    <button id="b1" aria-pressed="false">Batch G1</button>
+    <button id="b2" aria-pressed="false">Batch G2</button>
+  </div>
+  <p class="hint" id="hint">G1 labs: Tue, Thu, Fri &nbsp;·&nbsp; G2 labs: Mon, Fri, Sat</p>
+</div>
+
+<main id="days"></main>
+
+<section class="panel">
+  <h2>What moved since the last sheet</h2>
+  <ul>
+    <li><b>Newest change:</b> Saturday now runs to 2:30 — Discrete Maths was added at 1:30. Nothing else moved.</li>
+    <li><b>DS Lab split by batch.</b> It used to be one Monday session for both groups. Now G2 has it Monday morning (402B) and G1 has it Thursday afternoon (402A) — both with Mr. Sukhpreet, not Mr. Simran.</li>
+    <li><b>OOPS Lab G2 moved to Saturday morning</b>, taking over the Thursday afternoon slot that DS Lab G1 now occupies.</li>
+    <li><b>Monday 1:30 is no longer free</b> — it's OOPS now. Monday 11:30 is free instead.</li>
+    <li><b>Rooms filled in:</b> Wednesday DE is in AC 317 (was AB2 422), Thursday OOPS in AB2 421, Friday's last DS in AC 301.</li>
+    <li><b>CEC Lab has a teacher now:</b> Mr. Om Dang.</li>
+  </ul>
+</section>
+
+<section class="panel">
+  <h2>Codes on the sheet</h2>
+  <dl>
+    <dt>DS</dt><dd>Data Structures — Mr. Simran (lectures), Mr. Sukhpreet (lab)</dd>
+    <dt>OOPS</dt><dd>Object Oriented Programming — Ms. Ananya (lab)</dd>
+    <dt>CST209 (DM)</dt><dd>Discrete Mathematics</dd>
+    <dt>DE</dt><dd>Digital Electronics — Ms. Sangeeta Monga; G1 lab with Mr. Ramneek</dd>
+    <dt>Intro to AI</dt><dd>Introduction to Artificial Intelligence</dd>
+    <dt>CEC</dt><dd>Communication / Employability course — lab with Mr. Om Dang</dd>
+    <dt>NF, NF2, NF6, NF7</dt><dd>Faculty not yet named on the sheet</dd>
+    <dt>402A / 402B</dt><dd>Computer labs</dd>
+    <dt>AB2 · AC · ECE Lab</dt><dd>Academic block rooms</dd>
+  </dl>
+</section>
+
+<p class="caveat">Built from your revised scan, read cell by cell. The small faculty codes (NF2 / NF6 / NF7) are still placeholders on the sheet itself, so those names should appear once the department assigns them.</p>
+
+</div>
+
+<script>
+const C={ds:'var(--c-ds)',oops:'var(--c-oops)',de:'var(--c-de)',dm:'var(--c-dm)',ai:'var(--c-ai)',ws:'var(--c-ws)',cec:'var(--c-cec)'};
+const T=['9:30','10:30','11:30','12:30','1:30','2:30','3:30','4:30'];
+
+const DATA=[
+ {d:'Monday',s:[
+  {i:0,n:2,t:'DS Lab',tag:'G2',g:2,c:'ds',m:'Room 402B · Mr. Sukhpreet'},
+  {i:2,n:1,free:1},
+  {i:3,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'AB2 421 · NF'},
+  {i:4,n:1,t:'OOPS',c:'oops',m:'Room 317 · NF2'},
+  {i:5,n:1,t:'DS',c:'ds',m:'Room 317 · Mr. Simran'},
+  {i:6,n:1,t:'Entrepreneurship Workshop I',c:'ws',m:'Room 317 · NF7'}]},
+
+ {d:'Tuesday',s:[
+  {i:0,n:2,free:1},
+  {i:2,n:1,t:'CEC',c:'cec',m:'Room 317 · NF'},
+  {i:3,n:1,t:'Digital Electronics',c:'de',m:'Room 317 · Ms. Sangeeta Monga'},
+  {i:4,n:1,free:1},
+  {i:5,n:2,t:'Digital Electronics Lab',tag:'G1',g:1,c:'de',m:'ECE Lab AB2 315 · Mr. Ramneek'}]},
+
+ {d:'Wednesday',s:[
+  {i:0,n:1,t:'Intro to AI',c:'ai',m:'Room 317 · NF6'},
+  {i:1,n:1,t:'Entrepreneurship Workshop I',c:'ws',m:'Room 317 · NF7'},
+  {i:2,n:1,t:'Digital Electronics',c:'de',m:'AC 317 · Ms. Sangeeta Monga'},
+  {i:3,n:1,t:'OOPS',c:'oops',m:'Room 317 · NF2'},
+  {i:4,n:1,t:'Entrepreneurship Workshop I',c:'ws',m:'Room 317 · NF7'},
+  {i:5,n:1,free:1},
+  {i:6,n:1,t:'DS',c:'ds',m:'Room 317 · Mr. Simran'}]},
+
+ {d:'Thursday',s:[
+  {i:0,n:1,t:'Intro to AI',c:'ai',m:'Room 317 · NF6'},
+  {i:1,n:1,t:'OOPS',c:'oops',m:'AB2 421 · NF2'},
+  {i:2,n:1,free:1},
+  {i:3,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'Room 317 · NF'},
+  {i:4,n:1,t:'Digital Electronics',c:'de',m:'Room 317 · Ms. Sangeeta Monga'},
+  {i:5,n:2,t:'DS Lab',tag:'G1',g:1,c:'ds',m:'Room 402A · Mr. Sukhpreet'}]},
+
+ {d:'Friday',s:[
+  {i:0,n:2,free:1},
+  {i:2,n:2,t:'OOPS Lab',tag:'G1',g:1,c:'oops',m:'Room 402A · Ms. Ananya'},
+  {i:2,n:2,t:'Digital Electronics Lab',tag:'G2',g:2,c:'de',m:'ECE Lab AB2 315 · Ms. Sangeeta Monga'},
+  {i:4,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'Room 317 · NF'},
+  {i:5,n:1,t:'Intro to AI',c:'ai',m:'Room 317 · NF6'},
+  {i:6,n:1,t:'DS',c:'ds',m:'AC 301 · Mr. Simran'}]},
+
+ {d:'Saturday',s:[
+  {i:0,n:2,t:'OOPS Lab',tag:'G2',g:2,c:'oops',m:'Room 402A · Ms. Ananya'},
+  {i:2,n:2,t:'CEC Lab',c:'cec',m:'Mr. Om Dang'},
+  {i:4,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'Room 317 · NF'},
+  {i:5,n:2,free:1}]}
+];
+
+function build(){
+  const host=document.getElementById('days');
+  host.innerHTML=DATA.map(day=>{
+    const hour=Array(7).fill(null);
+    day.s.forEach(s=>{for(let k=s.i;k<s.i+s.n;k++) if(!hour[k]) hour[k]=s.free?null:C[s.c];});
+    const ruler=hour.map(h=>h?'<i style="--slot:'+h+'"></i>':'<i class="free"></i>').join('');
+
+    const busy=day.s.filter(s=>!s.free);
+    const first=busy.length?T[Math.min.apply(null,busy.map(s=>s.i))]:null;
+    const last=busy.length?T[Math.max.apply(null,busy.map(s=>s.i+s.n))]:null;
+    const note=busy.length?(first+' &rarr; '+last+'<br>'+busy.length+' session'+(busy.length>1?'s':'')):'no classes';
+
+    const rows=day.s.slice().sort((a,b)=>a.i-b.i||(a.g||0)-(b.g||0)).map(s=>{
+      if(s.free) return '<div class="slot free"><div class="time"><b>'+T[s.i]+'</b>'+s.n+'h open</div>'+
+        '<div class="body"><div class="subj">Free</div></div></div>';
+      const g=s.g?' data-g="'+s.g+'"':'';
+      return '<div class="slot"'+g+'><div class="time"><b>'+T[s.i]+'</b>'+T[s.i+s.n]+'</div>'+
+        '<div class="body" style="--col:'+C[s.c]+'"><div class="subj">'+s.t+
+        (s.tag?'<em>'+s.tag+'</em>':'')+'</div><div class="meta">'+s.m+'</div></div></div>';
+    }).join('');
+
+    return '<section class="day"><div class="day-head"><div class="day-name">'+day.d+
+      '</div><div class="day-note">'+note+'</div></div><div class="ruler">'+ruler+
+      '</div><div class="ticks"><span>9:30</span><span>12:30</span><span>4:30</span></div>'+rows+'</section>';
+  }).join('');
+}
+build();
+
+const HINTS={
+  all:'G1 labs: Tue, Thu, Fri &nbsp;·&nbsp; G2 labs: Mon, Fri, Sat',
+  '1':'G1: Mondays start at 12:30; Saturdays run 11:30 to 2:30.',
+  '2':'G2: Thursdays end at 2:30, but Saturdays run 9:30 to 2:30.'
+};
+const btns={all:bAll,'1':b1,'2':b2};
+function pick(k){
+  Object.keys(btns).forEach(key=>btns[key].setAttribute('aria-pressed',String(key===k)));
+  document.querySelectorAll('.slot[data-g]').forEach(el=>{
+    el.classList.toggle('dim', k!=='all' && el.dataset.g!==k);
+  });
+  document.getElementById('hint').innerHTML=HINTS[k];
+}
+bAll.onclick=function(){pick('all')}; b1.onclick=function(){pick('1')}; b2.onclick=function(){pick('2')};
+</script>
+</body>
+</html>
