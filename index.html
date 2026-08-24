@@ -128,7 +128,7 @@
 <section class="panel">
   <h2>What moved since the last sheet</h2>
   <ul>
-    <li><b>Newest change:</b> Saturday now runs to 2:30 — Discrete Maths was added at 1:30. Nothing else moved.</li>
+    <li><b>Newest changes:</b> Discrete Maths dropped off Thursday 12:30, so Thursday 11:30&ndash;1:30 is a clear two-hour gap. On Saturday, CEC Lab shifted from 11:30 to 2:30&ndash;4:30, leaving 11:30&ndash;1:30 free but pushing the day out to 4:30.</li>
     <li><b>DS Lab split by batch.</b> It used to be one Monday session for both groups. Now G2 has it Monday morning (402B) and G1 has it Thursday afternoon (402A) — both with Mr. Sukhpreet, not Mr. Simran.</li>
     <li><b>OOPS Lab G2 moved to Saturday morning</b>, taking over the Thursday afternoon slot that DS Lab G1 now occupies.</li>
     <li><b>Monday 1:30 is no longer free</b> — it's OOPS now. Monday 11:30 is free instead.</li>
@@ -188,8 +188,7 @@ const DATA=[
  {d:'Thursday',s:[
   {i:0,n:1,t:'Intro to AI',c:'ai',m:'Room 317 · NF6'},
   {i:1,n:1,t:'OOPS',c:'oops',m:'AB2 421 · NF2'},
-  {i:2,n:1,free:1},
-  {i:3,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'Room 317 · NF'},
+  {i:2,n:2,free:1},
   {i:4,n:1,t:'Digital Electronics',c:'de',m:'Room 317 · Ms. Sangeeta Monga'},
   {i:5,n:2,t:'DS Lab',tag:'G1',g:1,c:'ds',m:'Room 402A · Mr. Sukhpreet'}]},
 
@@ -197,15 +196,15 @@ const DATA=[
   {i:0,n:2,free:1},
   {i:2,n:2,t:'OOPS Lab',tag:'G1',g:1,c:'oops',m:'Room 402A · Ms. Ananya'},
   {i:2,n:2,t:'Digital Electronics Lab',tag:'G2',g:2,c:'de',m:'ECE Lab AB2 315 · Ms. Sangeeta Monga'},
-  {i:4,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'Room 317 · NF'},
+  {i:4,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'Room 317 · NF5'},
   {i:5,n:1,t:'Intro to AI',c:'ai',m:'Room 317 · NF6'},
   {i:6,n:1,t:'DS',c:'ds',m:'AC 301 · Mr. Simran'}]},
 
  {d:'Saturday',s:[
   {i:0,n:2,t:'OOPS Lab',tag:'G2',g:2,c:'oops',m:'Room 402A · Ms. Ananya'},
-  {i:2,n:2,t:'CEC Lab',c:'cec',m:'Mr. Om Dang'},
-  {i:4,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'Room 317 · NF'},
-  {i:5,n:2,free:1}]}
+  {i:2,n:2,free:1},
+  {i:4,n:1,t:'Discrete Maths',tag:'CST209',c:'dm',m:'Room 317 · NF5'},
+  {i:5,n:2,t:'CEC Lab',c:'cec',m:'Mr. Om Dang'}]}
 ];
 
 function build(){
@@ -238,8 +237,8 @@ build();
 
 const HINTS={
   all:'G1 labs: Tue, Thu, Fri &nbsp;·&nbsp; G2 labs: Mon, Fri, Sat',
-  '1':'G1: Mondays start at 12:30; Saturdays run 11:30 to 2:30.',
-  '2':'G2: Thursdays end at 2:30, but Saturdays run 9:30 to 2:30.'
+  '1':'G1: Mondays start at 12:30; Saturdays run 1:30 to 4:30.',
+  '2':'G2: Saturdays are 9:30-11:30, free, then 1:30-4:30.'
 };
 const btns={all:bAll,'1':b1,'2':b2};
 function pick(k){
